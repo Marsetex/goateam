@@ -35,6 +35,7 @@ class GoateamApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: TeamDetailView(title: "Hello"));
+        home: Container(child: Text("Hello")));
+    //home: TeamDetailView(title: "Hello"));
   }
 }
