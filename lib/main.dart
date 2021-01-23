@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:goateam/core/team_detail_view.dart';
-import 'package:goateam/utils/database/adapter/database_adapter.dart';
+import 'package:goateam/utils/database/adapter/goateam_database.dart';
 
 void main() async {
   initApp();
@@ -10,7 +10,7 @@ void main() async {
 
 void initApp() {
   WidgetsFlutterBinding.ensureInitialized();
-  SqliteDatabaseAdapter.adapter.context;
+  GoateamDatabase.adapter.context;
 }
 
 class GoateamApp extends StatelessWidget {

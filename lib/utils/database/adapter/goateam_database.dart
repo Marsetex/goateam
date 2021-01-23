@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:goateam/utils/database/management/database_creator.dart';
+import 'package:goateam/utils/database/management/database_populator.dart';
 
-class SqliteDatabaseAdapter {
-  static final SqliteDatabaseAdapter adapter =
-      SqliteDatabaseAdapter._createInstance();
+class GoateamDatabase {
+  static final GoateamDatabase adapter = GoateamDatabase._createInstance();
   static Database _dbContext;
 
   final int _dbVersion = 1;
 
-  SqliteDatabaseAdapter._createInstance();
+  GoateamDatabase._createInstance();
 
   Future<Database> get context async {
     if (_dbContext == null) {
@@ -26,7 +26,11 @@ class SqliteDatabaseAdapter {
     String path = directory.path + 'databases/goateam.db';
 
     return await openDatabase(path,
-        version: _dbVersion,
-        onCreate: (db, version) => DatabaseCreator().create(db, version));
+        version: _dbVersion, onCreate: (db, version) => _onCreate(db, version));
+  }
+
+  _onCreate(Database db, int version) async {
+    DatabaseCreator().create(db, version);
+    // DatabasePopulator().populate(db, version);
   }
 }
