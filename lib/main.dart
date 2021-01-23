@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:goateam/core/team_detail_view.dart';
+import 'package:goateam/core/team_view.dart';
 import 'package:goateam/utils/database/adapter/goateam_database.dart';
 
 void main() async {
@@ -35,7 +35,6 @@ class GoateamApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: Container(child: Text("Hello")));
-    //home: TeamDetailView(title: "Hello"));
+        home: TeamView(title: "Hello"));
   }
 }
