@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:goateam/utils/database/models/team.dart';
 
 class TeamListElement extends StatefulWidget {
-  final String teamName;
+  final Team team;
+  final void Function(Team) removeCallback;
 
-  final void Function(String) removeCallback;
-
-  TeamListElement(this.teamName, this.removeCallback);
+  TeamListElement(this.team, this.removeCallback);
 
   @override
   _TeamListElementState createState() => _TeamListElementState();
@@ -14,7 +14,7 @@ class TeamListElement extends StatefulWidget {
 class _TeamListElementState extends State<TeamListElement> {
   @override
   Widget build(BuildContext context) {
-    final name = widget.teamName;
+    final name = widget.team.name;
 
     return Dismissible(
       key: ValueKey(name),
@@ -34,7 +34,7 @@ class _TeamListElementState extends State<TeamListElement> {
             alignment: Alignment.centerRight,
             child: Icon(Icons.delete_outline)),
       ),
-      onDismissed: (direction) => widget.removeCallback(name),
+      onDismissed: (direction) => widget.removeCallback(widget.team),
     );
   }
 }
