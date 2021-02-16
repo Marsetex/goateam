@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:goateam/widgets/teams/creation/team_creation_view.dart';
 import 'package:goateam/widgets/teams/list/team_list.dart';
 
 class TeamHomeView extends StatefulWidget {
-  final String title;
-
-  TeamHomeView({Key key, this.title}) : super(key: key);
-
   @override
   _TeamHomeViewState createState() => _TeamHomeViewState();
 }
@@ -15,11 +13,16 @@ class _TeamHomeViewState extends State<TeamHomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(AppLocalizations.of(context).helloWorld),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TeamCreationView()),
+          );
+        },
       ),
       body: Center(child: TeamList()),
     );
