@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:goateam/utils/database/adapter/goateam_database.dart';
-import 'package:goateam/widgets/teams/creation/team_creation_view.dart';
 import 'package:goateam/widgets/teams/team_home_view.dart';
 
 void main() async {
