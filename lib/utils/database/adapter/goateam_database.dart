@@ -31,6 +31,6 @@ class GoateamDatabase {
 
   _onCreate(Database db, int version) async {
     DatabaseCreator().create(db, version);
-    // DatabasePopulator().populate(db, version);
+    DatabasePopulator().populate(db, version);
   }
 }
