@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
+
+import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/constants/database_constants.dart';
-import 'package:goateam/utils/database/models/team.dart';
 import 'package:goateam/utils/database/adapter/goateam_database.dart';
 
 class TeamProvider {

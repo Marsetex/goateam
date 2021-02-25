@@ -1,26 +1,18 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:goateam/models/rating_type.dart';
-import 'package:goateam/utils/database/models/rating_type.dart';
+import 'package:goateam/utils/converter/rating_type_converter.dart';
 import 'package:goateam/utils/database/constants/database_constants.dart';
-import 'package:goateam/utils/database/adapter/goateam_database.dart';
+import 'package:goateam/utils/database/provider/provider_base.dart';
 
-class RatingTypeProvider {
-  final _teams = <RatingType>[
-    RatingType("Rating 1", null),
-    RatingType("Rating 2", null),
-    RatingType("Rating 3", null),
-    RatingType("Rating 4", null)
-  ];
+class RatingTypeProvider extends ProviderBase {
+  Future<List<RatingType>> getRatingTypes([Database db]) async {
+    Database dbContext = await setDbContextIfNull(db);
 
-  Future<List<RatingType>> getRatingTypes() async {
-    return _teams;
-
-    Database db = await GoateamDatabase.adapter.context;
-
-    List<Map<String, dynamic>> result = await db.rawQuery('''
+    List<Map<String, dynamic>> result = await dbContext.rawQuery('''
       SELECT  ${DatabaseConstants.RTY_T_NAME}.${DatabaseConstants.RTY_C_RATING_TYPE_ID},
               ${DatabaseConstants.RTY_T_NAME}.${DatabaseConstants.RTY_C_RATING_TYPE_NAME},
+              ${DatabaseConstants.RTA_T_NAME}.${DatabaseConstants.RTA_C_RATING_TYPE_ID},
               ${DatabaseConstants.RTA_T_NAME}.${DatabaseConstants.RTA_C_RATING_TYPE_ATTRIBUTES_ID},
               ${DatabaseConstants.RTA_T_NAME}.${DatabaseConstants.RTA_C_ATTRIBUTE_NAME}
       FROM ${DatabaseConstants.RTY_T_NAME}
@@ -28,37 +20,32 @@ class RatingTypeProvider {
         ${DatabaseConstants.RTA_T_NAME}.${DatabaseConstants.RTA_C_RATING_TYPE_ID} = ${DatabaseConstants.RTY_T_NAME}.${DatabaseConstants.RTY_C_RATING_TYPE_ID};
     ''');
 
-    // await db.query(DatabaseConstants.RTY_T_NAME);
-
-    // List<Team> teams = List<Team>();
-    // result.forEach((map) {
-    //   teams.add(Team.toList(map));
-    // });
-    return null;
+    return RatingTypeConverter().convert(result);
   }
 
-  Future<void> insertRatingTypes(
-      Database db, List<RatingType> ratingTypes) async {
+  Future<void> insertRatingTypes(List<RatingType> ratingTypes,
+      [Database db]) async {
+    Database dbContext = await setDbContextIfNull(db);
+
     ratingTypes.forEach((rt) async {
-      await db.transaction((txn) async {
-        await txn.rawInsert('''
-          INSERT INTO ${DatabaseConstants.RTY_T_NAME} (${DatabaseConstants.RTY_C_RATING_TYPE_NAME})
-          VALUES ('${rt.name}')
-        ''');
+      await dbContext.transaction((txn) async {
+        await txn.insert(DatabaseConstants.RTY_T_NAME, rt.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.rollback);
 
         List<Map<String, dynamic>> result = await txn.query(
             DatabaseConstants.RTY_T_NAME,
             where: '${DatabaseConstants.RTY_C_RATING_TYPE_NAME} = ?',
             whereArgs: [rt.name],
             limit: 1);
-        Map<String, dynamic> kok = result[0];
-        var k = kok['${DatabaseConstants.RTY_C_RATING_TYPE_ID}'];
+        Map<String, dynamic> firstResult = result[0];
+        var ratingType =
+            firstResult['${DatabaseConstants.RTY_C_RATING_TYPE_ID}'];
 
         rt.attributes.forEach((element) async {
-          await txn.rawInsert('''
-            INSERT INTO ${DatabaseConstants.RTA_T_NAME} (${DatabaseConstants.RTA_C_RATING_TYPE_ID}, ${DatabaseConstants.RTA_C_ATTRIBUTE_NAME})
-            VALUES ($k, '${element.name}')
-          ''');
+          element.ratingTypeId = ratingType;
+
+          await txn.insert(DatabaseConstants.RTA_T_NAME, element.toMap(),
+              conflictAlgorithm: ConflictAlgorithm.rollback);
         });
       });
     });
