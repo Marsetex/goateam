@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:goateam/utils/database/models/team.dart';
+
+import 'package:goateam/models/team.dart';
 
 class TeamListElement extends StatefulWidget {
   final Team team;

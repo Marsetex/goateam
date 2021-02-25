@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:goateam/utils/database/models/team.dart';
+import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
 import 'package:goateam/widgets/teams/list/team_list_element.dart';
 
