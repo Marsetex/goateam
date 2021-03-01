@@ -49,7 +49,7 @@ class DatabaseCreator {
         CREATE TABLE ${DatabaseConstants.PLR_T_NAME} (
           ${DatabaseConstants.PLR_C_PLAYER_ID} INTEGER PRIMARY KEY AUTOINCREMENT, 
           ${DatabaseConstants.PLR_C_PLAYER_NAME} TEXT NOT NULL,
-          ${DatabaseConstants.PLR_C_PROFILE_PIC} TEXT NOT NULL
+          ${DatabaseConstants.PLR_C_PROFILE_PIC} BLOB NOT NULL
         )''');
   }
 
