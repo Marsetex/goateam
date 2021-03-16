@@ -1,14 +1,14 @@
-import 'dart:ffi';
-import 'dart:io';
-import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_source_selector.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerWrapper extends StatefulWidget {
+  final void Function(Uint8List) _imagePickerCallback;
+
+  ImagePickerWrapper(this._imagePickerCallback);
+
   @override
   _ImagePickerWrapperState createState() => _ImagePickerWrapperState();
 }
@@ -16,7 +16,7 @@ class ImagePickerWrapper extends StatefulWidget {
 class _ImagePickerWrapperState extends State<ImagePickerWrapper> {
   Uint8List _imageFile;
   dynamic _pickImageError;
-  String _retrieveDataError;
+  // String _retrieveDataError;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -71,6 +71,7 @@ class _ImagePickerWrapperState extends State<ImagePickerWrapper> {
 
       setState(() {
         _imageFile = o;
+        widget._imagePickerCallback(_imageFile);
       });
     } catch (e) {
       setState(() {

@@ -4,6 +4,10 @@ import 'package:goateam/utils/database/provider/rating_type_provider.dart';
 import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_picker_list_option.dart';
 
 class SkillRatingPickerList extends StatefulWidget {
+  final void Function(String) _skillRatingPickerCallback;
+
+  SkillRatingPickerList(this._skillRatingPickerCallback);
+
   @override
   _SkillRatingPickerListState createState() => _SkillRatingPickerListState();
 }
@@ -22,11 +26,12 @@ class _SkillRatingPickerListState extends State<SkillRatingPickerList> {
   @override
   void initState() {
     super.initState();
-    _ratingTypes = _getTeams();
+    _ratingTypes = _getRatingTypes();
   }
 
   Widget build(BuildContext context) {
     return FutureBuilder(
+      future: _ratingTypes,
       builder: (context, ratingTypeSnap) {
         if (!ratingTypeSnap.hasData || ratingTypeSnap.hasError) {
           return Text("No data");
@@ -40,22 +45,23 @@ class _SkillRatingPickerListState extends State<SkillRatingPickerList> {
               itemCount: ratingTypeSnap.data.length,
               itemBuilder: (context, index) {
                 RatingType type = ratingTypeSnap.data[index];
+
                 return SkillRatingPickerListOption(
                     type.name, type.name, _pickerValue, _onChangeCallback);
               }),
         );
       },
-      future: _ratingTypes,
     );
   }
 
-  Future<List<RatingType>> _getTeams() {
+  Future<List<RatingType>> _getRatingTypes() {
     return _provider.getRatingTypes();
   }
 
-  void _onChangeCallback(String newValue) {
+  void _onChangeCallback(String newValue) async {
     setState(() {
       _pickerValue = newValue;
     });
+    widget._skillRatingPickerCallback(_pickerValue);
   }
 }
