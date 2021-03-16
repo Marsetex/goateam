@@ -38,7 +38,7 @@ class DatabaseCreator {
           ${DatabaseConstants.TEM_C_TEAM_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
           ${DatabaseConstants.TEM_C_RATING_TYPE_ID} INTEGER NOT NULL,  
           ${DatabaseConstants.TEM_C_TEAM_NAME} TEXT NOT NULL,
-          ${DatabaseConstants.TEM_C_PROFILE_PIC} BLOB NOT NULL,
+          ${DatabaseConstants.TEM_C_PROFILE_PIC} BLOB NULL,
           ${DatabaseConstants.TEM_C_FAVORITE} BOOLEAN NOT NULL CHECK (${DatabaseConstants.TEM_C_FAVORITE} IN (0,1)),
           FOREIGN KEY(${DatabaseConstants.TEM_C_RATING_TYPE_ID}) REFERENCES ${DatabaseConstants.RTY_T_NAME}(${DatabaseConstants.RTY_C_RATING_TYPE_ID})
         )''');
@@ -49,7 +49,7 @@ class DatabaseCreator {
         CREATE TABLE ${DatabaseConstants.PLR_T_NAME} (
           ${DatabaseConstants.PLR_C_PLAYER_ID} INTEGER PRIMARY KEY AUTOINCREMENT, 
           ${DatabaseConstants.PLR_C_PLAYER_NAME} TEXT NOT NULL,
-          ${DatabaseConstants.PLR_C_PROFILE_PIC} BLOB NOT NULL
+          ${DatabaseConstants.PLR_C_PROFILE_PIC} BLOB NULL
         )''');
   }
 
