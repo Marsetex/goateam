@@ -1,41 +1,60 @@
+import 'dart:typed_data';
+
 import 'package:goateam/utils/database/constants/database_constants.dart';
 
 class Team {
   int _id;
   String _name;
-  String _profilePic;
+  int _ratingTypeId;
+  Uint8List _profilePic;
+  bool _favorite;
 
-  Team(this._id, this._name, this._profilePic);
+  Team(this._name, this._ratingTypeId, this._profilePic, this._favorite);
 
   int get id => _id;
 
   String get name => _name;
 
-  String get profilePic => _profilePic;
-
-  set id(int id) {
-    this._id = id;
-  }
-
   set name(String name) {
     this._name = name;
   }
 
-  set profilePic(String profilePic) {
+  int get ratingTypeId => _ratingTypeId;
+
+  set ratingTypeId(int ratingTypeId) {
+    this._ratingTypeId = ratingTypeId;
+  }
+
+  Uint8List get profilePic => _profilePic;
+
+  set profilePic(Uint8List profilePic) {
     this._profilePic = profilePic;
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      '${DatabaseConstants.TEM_C_TEAM_ID}': _id,
-      '${DatabaseConstants.TEM_C_TEAM_NAME}': _name,
-      '${DatabaseConstants.TEM_C_PROFILE_PIC}': _profilePic,
-    };
+  bool get favorite => _favorite;
+
+  set favorite(bool favorite) {
+    this._favorite = favorite;
   }
 
-  Team.toList(Map<String, dynamic> map) {
-    this._id = map['${DatabaseConstants.TEM_C_TEAM_ID}'];
-    this._name = map['${DatabaseConstants.TEM_C_TEAM_NAME}'];
-    this._profilePic = map['${DatabaseConstants.TEM_C_PROFILE_PIC}'];
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    if (_id != null) {
+      map['${DatabaseConstants.TEM_C_TEAM_ID}'] = _id;
+    }
+    map['${DatabaseConstants.TEM_C_TEAM_NAME}'] = _name;
+    map['${DatabaseConstants.TEM_C_RATING_TYPE_ID}'] = _ratingTypeId;
+    map['${DatabaseConstants.TEM_C_PROFILE_PIC}'] = _profilePic;
+    map['${DatabaseConstants.TEM_C_FAVORITE}'] = _favorite ? 1 : 0;
+
+    return map;
+  }
+
+  Team.fromMap(Map<String, dynamic> map) {
+    _id = map['${DatabaseConstants.TEM_C_TEAM_ID}'];
+    _name = map['${DatabaseConstants.TEM_C_TEAM_NAME}'];
+    _ratingTypeId = map['${DatabaseConstants.TEM_C_RATING_TYPE_ID}'];
+    _profilePic = map['${DatabaseConstants.TEM_C_PROFILE_PIC}'];
+    _favorite = map['${DatabaseConstants.TEM_C_FAVORITE}'] == 1;
   }
 }

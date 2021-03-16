@@ -32,7 +32,7 @@ class RatingTypeAttribute {
     return map;
   }
 
-  RatingTypeAttribute.fromMapObject(Map<String, dynamic> map) {
+  RatingTypeAttribute.fromMap(Map<String, dynamic> map) {
     _id = map[DatabaseConstants.RTA_C_RATING_TYPE_ATTRIBUTES_ID];
     _ratingTypeId = map[DatabaseConstants.RTA_C_RATING_TYPE_ID];
     _name = map[DatabaseConstants.RTA_C_ATTRIBUTE_NAME];

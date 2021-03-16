@@ -23,6 +23,20 @@ class RatingTypeProvider extends ProviderBase {
     return RatingTypeConverter().convert(result);
   }
 
+  Future<RatingType> getRatingTypeByName(String ratingTypeName,
+      [Database db]) async {
+    Database dbContext = await setDbContextIfNull(db);
+
+    List<Map<String, dynamic>> result = await dbContext.query(
+      DatabaseConstants.RTY_T_NAME,
+      where: '${DatabaseConstants.RTY_C_RATING_TYPE_NAME} = ?',
+      whereArgs: [ratingTypeName],
+      limit: 1,
+    );
+
+    return RatingType.fromMap(result[0]);
+  }
+
   Future<void> insertRatingTypes(List<RatingType> ratingTypes,
       [Database db]) async {
     Database dbContext = await setDbContextIfNull(db);
@@ -33,10 +47,11 @@ class RatingTypeProvider extends ProviderBase {
             conflictAlgorithm: ConflictAlgorithm.rollback);
 
         List<Map<String, dynamic>> result = await txn.query(
-            DatabaseConstants.RTY_T_NAME,
-            where: '${DatabaseConstants.RTY_C_RATING_TYPE_NAME} = ?',
-            whereArgs: [rt.name],
-            limit: 1);
+          DatabaseConstants.RTY_T_NAME,
+          where: '${DatabaseConstants.RTY_C_RATING_TYPE_NAME} = ?',
+          whereArgs: [rt.name],
+          limit: 1,
+        );
         Map<String, dynamic> firstResult = result[0];
         var ratingType =
             firstResult['${DatabaseConstants.RTY_C_RATING_TYPE_ID}'];

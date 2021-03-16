@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_picker_list.dart';
 
 class SkillRatingPickerWrapper extends StatefulWidget {
+  final void Function(String) _skillRatingPickerCallback;
+
+  SkillRatingPickerWrapper(this._skillRatingPickerCallback);
+
   @override
   _SkillRatingPickerWrapperState createState() =>
       _SkillRatingPickerWrapperState();
@@ -29,7 +33,7 @@ class _SkillRatingPickerWrapperState extends State<SkillRatingPickerWrapper> {
           ),
           Container(
             height: 170.0,
-            child: SkillRatingPickerList(),
+            child: SkillRatingPickerList(widget._skillRatingPickerCallback),
           ),
         ],
       ),

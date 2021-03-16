@@ -2,80 +2,39 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/constants/database_constants.dart';
-import 'package:goateam/utils/database/adapter/goateam_database.dart';
+import 'package:goateam/utils/database/provider/provider_base.dart';
 
-class TeamProvider {
-  final _teams = <Team>[
-    Team(1, "Team 1", ""),
-    Team(2, "Team 2", ""),
-    Team(3, "Team 3", ""),
-    Team(4, "Team 4", ""),
-  ];
+class TeamProvider extends ProviderBase {
+  Future<List<Team>> getTeams([Database db]) async {
+    Database dbContext = await setDbContextIfNull(db);
 
-  Future<List<Team>> getTeams() async {
-    return _teams;
+    List<Map<String, dynamic>> records =
+        await dbContext.query(DatabaseConstants.TEM_T_NAME);
 
-    // Database db = await GoateamDatabase.adapter.context;
+    var teams = <Team>[];
+    records.forEach((mapping) {
+      teams.add(Team.fromMap(mapping));
+    });
 
-    // List<Map<String, dynamic>> result =
-    //     await db.query(DatabaseConstants.TEM_T_NAME);
-
-    // List<Team> teams = List<Team>();
-    // result.forEach((map) {
-    //   teams.add(Team.toList(map));
-    // });
-    // return teams;
+    return teams;
   }
 
-  Future<int> insertTeam(Team team) async {
-    Database db = await GoateamDatabase.adapter.context;
+  Future<bool> insertTeam(Team team, [Database db]) async {
+    Database dbContext = await setDbContextIfNull(db);
 
-    return await db.insert(DatabaseConstants.TEM_T_NAME, team.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.abort);
+    int affectedRows = await dbContext.insert(
+        DatabaseConstants.TEM_T_NAME, team.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.rollback);
+
+    return affectedRows > 0;
   }
 
-  Future<int> deleteTeam(Team team) async {
-    var oldLength = _teams.length;
-    _teams.removeWhere((t) => t.name == team.name);
+  Future<bool> deleteTeam(Team team, [Database db]) async {
+    Database dbContext = await setDbContextIfNull(db);
 
-    var newLength = _teams.length;
-    return oldLength == newLength ? 0 : 1;
+    int affectedRows = await dbContext.delete(DatabaseConstants.TEM_T_NAME,
+        where: '${DatabaseConstants.TEM_C_TEAM_ID} = ?', whereArgs: [team.id]);
 
-    // Database db = await GoateamDatabase.adapter.context;
-
-    // return await db.delete(DatabaseConstants.TEM_T_NAME,
-    //     where: '${DatabaseConstants.TEM_C_TEAM_ID} = ?', whereArgs: [team.id]);
+    return affectedRows > 0;
   }
-
-  // // Update Operation: Update a todo object and save it to database
-  // Future<int> updateTodo(Todo todo) async {
-  //   var db = await this.database;
-  //   var result = await db.update(todoTable, todo.toMap(),
-  //       where: '$colId = ?', whereArgs: [todo.id]);
-  //   return result;
-  // }
-
-  // // Get number of todo objects in database
-  // Future<int> getCount() async {
-  //   Database db = await this.database;
-  //   List<Map<String, dynamic>> x =
-  //       await db.rawQuery('SELECT COUNT (*) from $todoTable');
-  //   int result = Sqflite.firstIntValue(x);
-  //   return result;
-  // }
-
-  // // Get the 'Map List' [ List<Map> ] and convert it to 'todo List' [ List<Todo> ]
-  // Future<List<Todo>> getTodoList() async {
-  //   var todoMapList = await getTodoMapList(); // Get 'Map List' from database
-  //   int count =
-  //       todoMapList.length; // Count the number of map entries in db table
-
-  //   List<Todo> todoList = List<Todo>();
-  //   // For loop to create a 'todo List' from a 'Map List'
-  //   for (int i = 0; i < count; i++) {
-  //     todoList.add(Todo.fromMapObject(todoMapList[i]));
-  //   }
-
-  //   return todoList;
-  // }
 }
