@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:goateam/models/team.dart';
+import 'package:goateam/widgets/teams/details/team_detail_view.dart';
 
 class TeamListElement extends StatefulWidget {
   final Team _team;
@@ -21,7 +22,8 @@ class _TeamListElementState extends State<TeamListElement> {
       key: ValueKey(name),
       child: ListTile(
         leading: _getAvatar(),
-        title: Text(name + '|' + widget._team.ratingTypeId.toString()),
+        title: Text(name),
+        onTap: () => _handleOnTap(widget._team),
       ),
       background: Container(
         padding: EdgeInsets.only(left: 10),
@@ -44,12 +46,16 @@ class _TeamListElementState extends State<TeamListElement> {
     return widget._team.profilePic != null
         ? CircleAvatar(backgroundImage: MemoryImage(widget._team.profilePic))
         : CircleAvatar(
-            backgroundColor: Colors.green,
-            radius: 30,
+            backgroundColor: Color(0xffecf0f1),
             child: Icon(
               Icons.person,
-              color: Colors.blue,
+              color: Colors.purple,
             ),
           );
+  }
+
+  _handleOnTap(Team team) {
+    Route route = MaterialPageRoute(builder: (context) => TeamDetailView(team));
+    Navigator.push(context, route);
   }
 }

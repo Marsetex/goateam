@@ -42,7 +42,7 @@ class _ImagePickerWrapperState extends State<ImagePickerWrapper> {
                 )
               : Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: Color(0xffecf0f1),
                       borderRadius: BorderRadius.circular(50)),
                   width: 200,
                   height: 200,
