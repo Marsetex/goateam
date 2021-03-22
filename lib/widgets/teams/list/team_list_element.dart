@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:goateam/models/team.dart';
-import 'package:goateam/widgets/teams/details/team_detail_view.dart';
+import 'package:goateam/widgets/teams/views/team_detail_view.dart';
 
 class TeamListElement extends StatefulWidget {
   final Team _team;

@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:goateam/core/app_initializer.dart';
 import 'package:goateam/widgets/splash_screen/splash_screen_view.dart';
-import 'package:goateam/widgets/teams/team_home_view.dart';
+import 'package:goateam/widgets/teams/views/team_home_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

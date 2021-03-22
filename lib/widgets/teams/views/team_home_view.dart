@@ -35,7 +35,7 @@ class _TeamHomeViewState extends State<TeamHomeView> {
           Navigator.push(context, route).then(onGoBack);
         },
       ),
-      body: Center(child: TeamList(_teams, deleteTeam)),
+      body: Container(child: TeamList(_teams, deleteTeam)),
     );
   }
 
