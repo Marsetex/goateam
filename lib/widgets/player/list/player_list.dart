@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:goateam/models/player.dart';
-import 'package:goateam/widgets/player/player_list_element.dart';
+import 'package:goateam/widgets/player/list/player_list_element.dart';
 import 'package:goateam/widgets/teams/list/team_list_empty_view.dart';
 
 class PlayerList extends StatefulWidget {

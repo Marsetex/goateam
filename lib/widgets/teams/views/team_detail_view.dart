@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:goateam/models/player.dart';
 
+import 'package:goateam/models/player.dart';
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/player_provider.dart';
-import 'package:goateam/widgets/player/player_list.dart';
+import 'package:goateam/widgets/player/list/player_list.dart';
 
 class TeamDetailView extends StatefulWidget {
   final Team _team;

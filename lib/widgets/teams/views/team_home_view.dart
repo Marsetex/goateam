@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
 import 'package:goateam/widgets/teams/creation/team_creation_view.dart';
