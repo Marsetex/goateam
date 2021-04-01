@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -10,17 +9,30 @@ import 'package:goateam/utils/database/provider/team_provider.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_wrapper.dart';
 import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_picker_wrapper.dart';
 
-class TeamCreationForm extends StatefulWidget {
+class TeamForm extends StatefulWidget {
+  final Team _team;
+
+  TeamForm(this._team);
+
   @override
-  _TeamCreationFormState createState() => _TeamCreationFormState();
+  _TeamFormState createState() => _TeamFormState();
 }
 
-class _TeamCreationFormState extends State<TeamCreationForm> {
+class _TeamFormState extends State<TeamForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
 
   Uint8List _rawImage;
   RatingType _ratingType;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget._team != null) {
+      emailController.text = widget._team.name;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
