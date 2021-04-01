@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
-import 'package:goateam/widgets/teams/views/team_creation_view.dart';
+import 'package:goateam/widgets/teams/views/team_creator_view.dart';
 import 'package:goateam/widgets/teams/list/team_list.dart';
 
 class TeamHomeView extends StatefulWidget {
@@ -32,7 +32,7 @@ class _TeamHomeViewState extends State<TeamHomeView> {
         child: Icon(Icons.add),
         onPressed: () async {
           Route route =
-              MaterialPageRoute(builder: (context) => TeamCreationView());
+              MaterialPageRoute(builder: (context) => TeamCreatorView());
           Navigator.push(context, route).then(onGoBack);
         },
       ),

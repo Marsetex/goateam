@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:goateam/models/team.dart';
+import 'package:goateam/widgets/teams/views/team_editor_view.dart';
 
 class TeamDetailScrollView extends StatefulWidget {
   final Team _team;
@@ -45,18 +46,30 @@ class _TeamDetailScrollViewState extends State<TeamDetailScrollView> {
   void _settingModalBottomSheet(context) {
     showModalBottomSheet(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        ),
+        backgroundColor: Colors.white,
         builder: (BuildContext bc) {
           return Container(
-            child: new Wrap(
+            child: Wrap(
               children: <Widget>[
-                new ListTile(
-                    leading: new Icon(Icons.music_note),
-                    title: new Text('Music'),
-                    onTap: () => {}),
-                new ListTile(
-                  leading: new Icon(Icons.videocam),
-                  title: new Text('Video'),
-                  onTap: () => {},
+                Container(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Center(
+                    child: Icon(Icons.maximize),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text('Edit'),
+                  onTap: () {
+                    Route route = MaterialPageRoute(
+                        builder: (context) => TeamEditorView(widget._team));
+                    Navigator.push(context, route);
+                    // Navigator.push(context, route).then(onGoBack);
+                  },
                 ),
               ],
             ),
