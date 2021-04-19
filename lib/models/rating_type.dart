@@ -37,4 +37,10 @@ class RatingType {
     _name = map[DatabaseConstants.RTY_C_RATING_TYPE_NAME];
     _attributes = <RatingTypeAttribute>[RatingTypeAttribute.fromMap(map)];
   }
+
+  bool operator ==(dynamic other) =>
+      other != null && other is RatingType && this.name == other.name;
+
+  @override
+  int get hashCode => super.hashCode;
 }

@@ -26,7 +26,7 @@ class _TeamDetailScrollViewState extends State<TeamDetailScrollView> {
           flexibleSpace: FlexibleSpaceBar(
             title: Text(widget._team.name),
             centerTitle: true,
-            background: Image.memory(widget._team.profilePic),
+            background: _getBackgroundImage(),
             stretchModes: [],
           ),
           actions: [
@@ -41,6 +41,12 @@ class _TeamDetailScrollViewState extends State<TeamDetailScrollView> {
         widget._newsListSliver
       ],
     );
+  }
+
+  Image _getBackgroundImage() {
+    return widget._team.profilePic != null
+        ? Image.memory(widget._team.profilePic)
+        : Image.asset('assets/team_detail_default_background.jpg');
   }
 
   void _settingModalBottomSheet(context) {

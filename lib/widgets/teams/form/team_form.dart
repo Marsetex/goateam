@@ -2,12 +2,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:goateam/models/rating_type.dart';
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/rating_type_provider.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_wrapper.dart';
-import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_picker_wrapper.dart';
+import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_picker.dart';
 
 class TeamForm extends StatefulWidget {
   final Team _team;
@@ -20,7 +21,8 @@ class TeamForm extends StatefulWidget {
 
 class _TeamFormState extends State<TeamForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = new TextEditingController();
+  final _teamNameController = new TextEditingController();
+  final _ratingTypeProvider = new RatingTypeProvider();
 
   Uint8List _rawImage;
   RatingType _ratingType;
@@ -30,7 +32,9 @@ class _TeamFormState extends State<TeamForm> {
     super.initState();
 
     if (widget._team != null) {
-      emailController.text = widget._team.name;
+      _teamNameController.text = widget._team.name;
+      _rawImage = widget._team.profilePic;
+      _ratingType = widget._team.ratingType;
     }
   }
 
@@ -44,12 +48,12 @@ class _TeamFormState extends State<TeamForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ImagePickerWrapper(_getImageFromPicker),
+                ImagePickerWrapper(_rawImage, _getImageFromPicker),
                 SizedBox(
                   height: 15.0,
                 ),
                 TextFormField(
-                  controller: emailController,
+                  controller: _teamNameController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter team name',
@@ -64,7 +68,7 @@ class _TeamFormState extends State<TeamForm> {
                 SizedBox(
                   height: 15.0,
                 ),
-                SkillRatingPickerWrapper(_getSkillRatingFromPicker),
+                SkillRatingPicker(_ratingType, _getSkillRatingFromPicker),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
@@ -86,13 +90,12 @@ class _TeamFormState extends State<TeamForm> {
     _rawImage = rawImage;
   }
 
-  _getSkillRatingFromPicker(String skillRatingName) async {
-    _ratingType =
-        await RatingTypeProvider().getRatingTypeByName(skillRatingName);
+  _getSkillRatingFromPicker(RatingType skillRating) {
+    _ratingType = skillRating;
   }
 
   _handleOnPressed() async {
-    var newTeam = Team(emailController.text, _ratingType.id, _rawImage, false);
+    var newTeam = Team(_teamNameController.text, _ratingType, _rawImage, false);
     await TeamProvider().insertTeam(newTeam);
     Navigator.pop(context);
   }

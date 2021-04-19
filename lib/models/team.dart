@@ -1,15 +1,16 @@
 import 'dart:typed_data';
 
+import 'package:goateam/models/rating_type.dart';
 import 'package:goateam/utils/database/constants/database_constants.dart';
 
 class Team {
   int _id;
   String _name;
-  int _ratingTypeId;
+  RatingType _ratingType;
   Uint8List _profilePic;
   bool _favorite;
 
-  Team(this._name, this._ratingTypeId, this._profilePic, this._favorite);
+  Team(this._name, this._ratingType, this._profilePic, this._favorite);
 
   int get id => _id;
 
@@ -19,10 +20,10 @@ class Team {
     this._name = name;
   }
 
-  int get ratingTypeId => _ratingTypeId;
+  RatingType get ratingType => _ratingType;
 
-  set ratingTypeId(int ratingTypeId) {
-    this._ratingTypeId = ratingTypeId;
+  set ratingType(RatingType ratingTypeId) {
+    this._ratingType = ratingTypeId;
   }
 
   Uint8List get profilePic => _profilePic;
@@ -43,9 +44,9 @@ class Team {
       map['${DatabaseConstants.TEM_C_TEAM_ID}'] = _id;
     }
     map['${DatabaseConstants.TEM_C_TEAM_NAME}'] = _name;
-    map['${DatabaseConstants.TEM_C_RATING_TYPE_ID}'] = _ratingTypeId;
     map['${DatabaseConstants.TEM_C_PROFILE_PIC}'] = _profilePic;
     map['${DatabaseConstants.TEM_C_FAVORITE}'] = _favorite ? 1 : 0;
+    map['${DatabaseConstants.TEM_C_RATING_TYPE_ID}'] = _ratingType.id;
 
     return map;
   }
@@ -53,8 +54,8 @@ class Team {
   Team.fromMap(Map<String, dynamic> map) {
     _id = map['${DatabaseConstants.TEM_C_TEAM_ID}'];
     _name = map['${DatabaseConstants.TEM_C_TEAM_NAME}'];
-    _ratingTypeId = map['${DatabaseConstants.TEM_C_RATING_TYPE_ID}'];
     _profilePic = map['${DatabaseConstants.TEM_C_PROFILE_PIC}'];
     _favorite = map['${DatabaseConstants.TEM_C_FAVORITE}'] == 1;
+    _ratingType = <RatingType>[RatingType.fromMap(map)].first;
   }
 }
