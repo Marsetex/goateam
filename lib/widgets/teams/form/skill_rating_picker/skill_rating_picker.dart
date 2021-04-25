@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:goateam/models/rating_type.dart';
-import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_description_card.dart';
-import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_dropdown_button.dart';
+import 'package:goateam/widgets/teams/form/skill_rating_picker/skill_rating_description_card.dart';
+import 'package:goateam/widgets/teams/form/skill_rating_picker/skill_rating_dropdown_button.dart';
 
 class SkillRatingPicker extends StatefulWidget {
   final RatingType _skillRating;
