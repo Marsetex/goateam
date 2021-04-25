@@ -5,20 +5,27 @@ import 'package:goateam/widgets/shared/image_picker/image_picker_source_selector
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerWrapper extends StatefulWidget {
+  final Uint8List _rawImage;
   final void Function(Uint8List) _imagePickerCallback;
 
-  ImagePickerWrapper(this._imagePickerCallback);
+  ImagePickerWrapper(this._rawImage, this._imagePickerCallback);
 
   @override
   _ImagePickerWrapperState createState() => _ImagePickerWrapperState();
 }
 
 class _ImagePickerWrapperState extends State<ImagePickerWrapper> {
+  final ImagePicker _picker = ImagePicker();
+
   Uint8List _imageFile;
   dynamic _pickImageError;
-  // String _retrieveDataError;
 
-  final ImagePicker _picker = ImagePicker();
+  @override
+  void initState() {
+    super.initState();
+
+    _imageFile = widget._rawImage;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,7 @@ class _ImagePickerWrapperState extends State<ImagePickerWrapper> {
                 )
               : Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: Color(0xffecf0f1),
                       borderRadius: BorderRadius.circular(50)),
                   width: 200,
                   height: 200,
