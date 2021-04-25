@@ -5,10 +5,10 @@ import 'package:flutter/widgets.dart';
 
 import 'package:goateam/models/rating_type.dart';
 import 'package:goateam/models/team.dart';
-import 'package:goateam/utils/database/provider/rating_type_provider.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_wrapper.dart';
-import 'package:goateam/widgets/shared/skill_rating_picker/skill_rating_picker.dart';
+// import 'package:goateam/widgets/teams/form/favorite_selector/favorite_button.dart';
+import 'package:goateam/widgets/teams/form/skill_rating_picker/skill_rating_picker.dart';
 
 class TeamForm extends StatefulWidget {
   final Team _team;
@@ -22,7 +22,6 @@ class TeamForm extends StatefulWidget {
 class _TeamFormState extends State<TeamForm> {
   final _formKey = GlobalKey<FormState>();
   final _teamNameController = new TextEditingController();
-  final _ratingTypeProvider = new RatingTypeProvider();
 
   Uint8List _rawImage;
   RatingType _ratingType;
@@ -46,7 +45,6 @@ class _TeamFormState extends State<TeamForm> {
           child: Padding(
             padding: EdgeInsets.all(15.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ImagePickerWrapper(_rawImage, _getImageFromPicker),
                 SizedBox(
@@ -69,6 +67,13 @@ class _TeamFormState extends State<TeamForm> {
                   height: 15.0,
                 ),
                 SkillRatingPicker(_ratingType, _getSkillRatingFromPicker),
+                SizedBox(
+                  height: 15.0,
+                ),
+                // FavioriteButton(),
+                SizedBox(
+                  height: 15.0,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
