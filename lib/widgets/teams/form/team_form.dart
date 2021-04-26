@@ -7,7 +7,7 @@ import 'package:goateam/models/rating_type.dart';
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_wrapper.dart';
-// import 'package:goateam/widgets/teams/form/favorite_selector/favorite_button.dart';
+import 'package:goateam/widgets/teams/form/favorite_selector/favorite_button.dart';
 import 'package:goateam/widgets/teams/form/skill_rating_picker/skill_rating_picker.dart';
 
 class TeamForm extends StatefulWidget {
@@ -67,10 +67,7 @@ class _TeamFormState extends State<TeamForm> {
                   height: 15.0,
                 ),
                 SkillRatingPicker(_ratingType, _getSkillRatingFromPicker),
-                SizedBox(
-                  height: 15.0,
-                ),
-                // FavioriteButton(),
+                FavioriteButton(),
                 SizedBox(
                   height: 15.0,
                 ),
