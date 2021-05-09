@@ -15,7 +15,6 @@ class SkillRatingDescriptionCard extends StatefulWidget {
 class _SkillRatingDescriptionCardState
     extends State<SkillRatingDescriptionCard> {
   bool selected = false;
-  double _animatedHeight = 100.0;
 
   Widget build(BuildContext context) {
     return widget._skillRating != null ? _generateCard() : Container();

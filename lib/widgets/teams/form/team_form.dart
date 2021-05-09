@@ -7,7 +7,7 @@ import 'package:goateam/models/rating_type.dart';
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_wrapper.dart';
-// import 'package:goateam/widgets/teams/form/favorite_selector/favorite_button.dart';
+import 'package:goateam/widgets/teams/form/favorite_selector/favorite_button.dart';
 import 'package:goateam/widgets/teams/form/skill_rating_picker/skill_rating_picker.dart';
 
 class TeamForm extends StatefulWidget {
@@ -25,6 +25,7 @@ class _TeamFormState extends State<TeamForm> {
 
   Uint8List _rawImage;
   RatingType _ratingType;
+  bool _favoriteValue;
 
   @override
   void initState() {
@@ -34,6 +35,9 @@ class _TeamFormState extends State<TeamForm> {
       _teamNameController.text = widget._team.name;
       _rawImage = widget._team.profilePic;
       _ratingType = widget._team.ratingType;
+      _favoriteValue = widget._team.favorite;
+    } else {
+      _favoriteValue = false;
     }
   }
 
@@ -70,7 +74,7 @@ class _TeamFormState extends State<TeamForm> {
                 SizedBox(
                   height: 15.0,
                 ),
-                // FavioriteButton(),
+                FavoriteButton(_favoriteValue, _getFavoriteButtonValue),
                 SizedBox(
                   height: 15.0,
                 ),
@@ -99,8 +103,13 @@ class _TeamFormState extends State<TeamForm> {
     _ratingType = skillRating;
   }
 
+  _getFavoriteButtonValue(bool favValue) {
+    _favoriteValue = favValue;
+  }
+
   _handleOnPressed() async {
-    var newTeam = Team(_teamNameController.text, _ratingType, _rawImage, false);
+    var newTeam =
+        Team(_teamNameController.text, _ratingType, _rawImage, _favoriteValue);
     await TeamProvider().insertTeam(newTeam);
     Navigator.pop(context);
   }
