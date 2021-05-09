@@ -25,6 +25,7 @@ class _TeamFormState extends State<TeamForm> {
 
   Uint8List _rawImage;
   RatingType _ratingType;
+  bool _favoriteValue;
 
   @override
   void initState() {
@@ -34,6 +35,9 @@ class _TeamFormState extends State<TeamForm> {
       _teamNameController.text = widget._team.name;
       _rawImage = widget._team.profilePic;
       _ratingType = widget._team.ratingType;
+      _favoriteValue = widget._team.favorite;
+    } else {
+      _favoriteValue = false;
     }
   }
 
@@ -67,7 +71,10 @@ class _TeamFormState extends State<TeamForm> {
                   height: 15.0,
                 ),
                 SkillRatingPicker(_ratingType, _getSkillRatingFromPicker),
-                FavioriteButton(),
+                SizedBox(
+                  height: 15.0,
+                ),
+                FavoriteButton(_favoriteValue, _getFavoriteButtonValue),
                 SizedBox(
                   height: 15.0,
                 ),
@@ -96,8 +103,13 @@ class _TeamFormState extends State<TeamForm> {
     _ratingType = skillRating;
   }
 
+  _getFavoriteButtonValue(bool favValue) {
+    _favoriteValue = favValue;
+  }
+
   _handleOnPressed() async {
-    var newTeam = Team(_teamNameController.text, _ratingType, _rawImage, false);
+    var newTeam =
+        Team(_teamNameController.text, _ratingType, _rawImage, _favoriteValue);
     await TeamProvider().insertTeam(newTeam);
     Navigator.pop(context);
   }
