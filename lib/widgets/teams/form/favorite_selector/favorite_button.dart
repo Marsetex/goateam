@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 
-class FavioriteButton extends StatefulWidget {
+class FavoriteButton extends StatefulWidget {
+  final bool _favoriteValue;
+  final void Function(bool) _favoriteButtonValueCallback;
+
+  FavoriteButton(this._favoriteValue, this._favoriteButtonValueCallback);
+
   @override
-  _FavioriteButtonState createState() => _FavioriteButtonState();
+  _FavoriteButtonState createState() => _FavoriteButtonState();
 }
 
-class _FavioriteButtonState extends State<FavioriteButton> {
+class _FavoriteButtonState extends State<FavoriteButton> {
+  bool _favValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _favValue = widget._favoriteValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () {},
+      onPressed: () => _handleOnPress(),
       style: ButtonStyle(
           side: MaterialStateProperty.all<BorderSide>(
               BorderSide(color: Colors.grey)),
@@ -26,11 +39,22 @@ class _FavioriteButtonState extends State<FavioriteButton> {
             ),
           ),
           Icon(
-            Icons.star_outline_rounded,
+            _getFavoriteIcon(),
             color: Colors.grey,
           ),
         ],
       ),
     );
+  }
+
+  void _handleOnPress() {
+    setState(() {
+      _favValue = !_favValue;
+    });
+    widget._favoriteButtonValueCallback(_favValue);
+  }
+
+  IconData _getFavoriteIcon() {
+    return _favValue ? Icons.star_rounded : Icons.star_outline_rounded;
   }
 }
