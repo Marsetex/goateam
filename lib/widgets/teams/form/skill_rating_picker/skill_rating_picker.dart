@@ -28,9 +28,7 @@ class _SkillRatingPickerState extends State<SkillRatingPicker> {
     return Column(
       children: <Widget>[
         SkillRatingDropdownButton(_pickerValue, _onChangeCallback),
-        SizedBox(
-          height: 15.0,
-        ),
+        _getSizedBox(),
         SkillRatingDescriptionCard(_pickerValue),
       ],
     );
@@ -41,5 +39,13 @@ class _SkillRatingPickerState extends State<SkillRatingPicker> {
       _pickerValue = newValue;
     });
     widget._skillRatingPickerCallback(_pickerValue);
+  }
+
+  Widget _getSizedBox() {
+    return _pickerValue != null
+        ? SizedBox(
+            height: 15.0,
+          )
+        : Container();
   }
 }
