@@ -3,7 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import 'package:goateam/models/player.dart';
+import 'package:goateam/models/rating_type.dart';
 import 'package:goateam/models/team.dart';
+import 'package:goateam/widgets/players/form/skill_rating_form/skill_rating_form.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_wrapper.dart';
 
 class PlayerForm extends StatefulWidget {
@@ -21,16 +23,19 @@ class _PlayerFormState extends State<PlayerForm> {
   final _playerNameController = new TextEditingController();
 
   Uint8List _rawImage;
-  //RatingType _ratingType;
+  RatingType _ratingType;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget._player != null) {
-      _playerNameController.text = widget._player.name;
-      _rawImage = widget._player.profilePic;
-      // _ratingType = widget._player.ratingType;
+    if (widget._team != null) {
+      _ratingType = widget._team.ratingType;
+
+      if (widget._player != null) {
+        _playerNameController.text = widget._player.name;
+        _rawImage = widget._player.profilePic;
+      }
     }
   }
 
@@ -63,7 +68,7 @@ class _PlayerFormState extends State<PlayerForm> {
                 SizedBox(
                   height: 15.0,
                 ),
-                //SkillRatingPicker(_ratingType, _getSkillRatingFromPicker),
+                SkillRatingForm(_ratingType, _getSkillRatingFromPicker),
                 SizedBox(
                   height: 15.0,
                 ),
@@ -86,5 +91,9 @@ class _PlayerFormState extends State<PlayerForm> {
 
   _getImageFromPicker(Uint8List rawImage) {
     _rawImage = rawImage;
+  }
+
+  _getSkillRatingFromPicker(RatingType skillRating) {
+    _ratingType = skillRating;
   }
 }
