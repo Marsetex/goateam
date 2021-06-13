@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:goateam/models/player.dart';
 import 'package:goateam/models/rating_type.dart';
 import 'package:goateam/models/team.dart';
+import 'package:goateam/utils/database/provider/player_provider.dart';
 import 'package:goateam/widgets/players/form/skill_rating_form/skill_rating_form.dart';
 import 'package:goateam/widgets/shared/image_picker/image_picker_wrapper.dart';
 
@@ -24,6 +25,7 @@ class _PlayerFormState extends State<PlayerForm> {
 
   Uint8List _rawImage;
   RatingType _ratingType;
+  Map<int, int> _ratings;
 
   @override
   void initState() {
@@ -72,17 +74,17 @@ class _PlayerFormState extends State<PlayerForm> {
                 SizedBox(
                   height: 15.0,
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       if (_formKey.currentState.validate()) {
-                //         _handleOnPressed();
-                //       }
-                //     },
-                //     child: Text('Submit'),
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        _handleOnPressed();
+                      }
+                    },
+                    child: Text('Submit'),
+                  ),
+                ),
               ],
             ),
           ),
@@ -93,7 +95,14 @@ class _PlayerFormState extends State<PlayerForm> {
     _rawImage = rawImage;
   }
 
-  _getSkillRatingFromPicker(RatingType skillRating) {
-    _ratingType = skillRating;
+  _getSkillRatingFromPicker(Map<int, int> skillRatings) {
+    _ratings = skillRatings;
+  }
+
+  _handleOnPressed() async {
+    var newPlayer = new Player(_playerNameController.text, _rawImage);
+
+    await PlayerProvider().insertPlayer(newPlayer, widget._team, _ratings);
+    Navigator.pop(context);
   }
 }

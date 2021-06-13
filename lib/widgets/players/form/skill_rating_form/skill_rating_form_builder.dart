@@ -6,7 +6,7 @@ import 'package:goateam/utils/database/provider/rating_type_provider.dart';
 
 class SkillRatingFormBuilder extends StatefulWidget {
   final RatingType _skillRating;
-  final void Function(RatingType) _skillRatingPickerCallback;
+  final void Function(Map<int, int>) _skillRatingPickerCallback;
 
   SkillRatingFormBuilder(this._skillRating, this._skillRatingPickerCallback);
 
@@ -15,14 +15,14 @@ class SkillRatingFormBuilder extends StatefulWidget {
 }
 
 class _SkillRatingFormBuilderState extends State<SkillRatingFormBuilder> {
-  List<double> _skillRatingValues;
+  Map<int, int> _skillRatingValues;
   Future<List<RatingTypeAttribute>> _ratingTypeAttributes;
 
   @override
   void initState() {
     super.initState();
 
-    _skillRatingValues = [];
+    _skillRatingValues = new Map<int, int>();
 
     if (widget._skillRating != null) {
       _ratingTypeAttributes = RatingTypeProvider()
@@ -41,7 +41,8 @@ class _SkillRatingFormBuilderState extends State<SkillRatingFormBuilder> {
               shrinkWrap: true,
               itemCount: ratingTypeAttributes.data.length,
               itemBuilder: (context, index) {
-                _skillRatingValues.add(0.0);
+                int ratingTypeAttributeId = ratingTypeAttributes.data[index].id;
+                _skillRatingValues.putIfAbsent(ratingTypeAttributeId, () => 0);
 
                 return Column(
                   children: [
@@ -56,23 +57,24 @@ class _SkillRatingFormBuilderState extends State<SkillRatingFormBuilder> {
                           ),
                           Expanded(
                             child: Slider(
-                              value: _skillRatingValues[index],
+                              value: _skillRatingValues[ratingTypeAttributeId]
+                                  .toDouble(),
                               min: 0,
                               max: 10,
                               divisions: 10,
-                              label:
-                                  _skillRatingValues[index].toInt().toString(),
+                              label: _skillRatingValues[ratingTypeAttributeId]
+                                  .toString(),
                               onChanged: (double value) {
-                                setState(() {
-                                  _skillRatingValues[index] = value;
-                                });
+                                _handleOnChange(
+                                    ratingTypeAttributeId, value.toInt());
                               },
                             ),
                           ),
                           Container(
                             width: 20,
                             child: Text(
-                                _skillRatingValues[index].toInt().toString()),
+                                _skillRatingValues[ratingTypeAttributeId]
+                                    .toString()),
                           ),
                         ],
                       ),
@@ -85,5 +87,12 @@ class _SkillRatingFormBuilderState extends State<SkillRatingFormBuilder> {
         }
       },
     );
+  }
+
+  void _handleOnChange(int ratingTypeAttributeId, int value) {
+    setState(() {
+      _skillRatingValues[ratingTypeAttributeId] = value;
+    });
+    widget._skillRatingPickerCallback(_skillRatingValues);
   }
 }
