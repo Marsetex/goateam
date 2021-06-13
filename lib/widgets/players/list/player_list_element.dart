@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:goateam/models/player.dart';
+import 'package:goateam/models/team.dart';
+import 'package:goateam/widgets/players/views/player_editor_view.dart';
 
 class PlayerListElement extends StatefulWidget {
   final Player _player;
+  final Team _team;
   final void Function(Player) _removeCallback;
 
-  PlayerListElement(this._player, this._removeCallback);
+  PlayerListElement(this._player, this._team, this._removeCallback);
 
   @override
   _PlayerListElementState createState() => _PlayerListElementState();
@@ -54,7 +57,8 @@ class _PlayerListElementState extends State<PlayerListElement> {
   }
 
   _handleOnTap(Player player) {
-    // Route route = MaterialPageRoute(builder: (context) => TeamDetailView(team));
-    // Navigator.push(context, route);
+    Route route = MaterialPageRoute(
+        builder: (context) => PlayerEditorView(widget._team, widget._player));
+    Navigator.push(context, route);
   }
 }

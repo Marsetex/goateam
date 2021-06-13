@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:goateam/models/player.dart';
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/player_provider.dart';
+import 'package:goateam/widgets/players/list/player_list_element.dart';
 import 'package:goateam/widgets/teams/details/team_detail_scroll_view.dart';
 
 class TeamDetailBody extends StatefulWidget {
@@ -33,17 +34,20 @@ class _TeamDetailBodyState extends State<TeamDetailBody> {
           Widget newsListSliver;
 
           if (playersSnap.connectionState == ConnectionState.done) {
-            if (!playersSnap.hasData || playersSnap.hasError) {
+            if (!playersSnap.hasData ||
+                playersSnap.data.length == 0 ||
+                playersSnap.hasError) {
               newsListSliver = SliverToBoxAdapter(
-                child: CircularProgressIndicator(),
+                child: Container(
+                  child: Text("No Players"),
+                ),
               );
             } else {
               newsListSliver = SliverList(
                 delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(playersSnap.data[index].name),
-                  );
+                  return PlayerListElement(
+                      playersSnap.data[index], widget._team, _deletePlayer);
                 }, childCount: playersSnap.data.length),
               );
             }
@@ -58,7 +62,7 @@ class _TeamDetailBodyState extends State<TeamDetailBody> {
   }
 
   Future<List<Player>> _getPlayers() {
-    return PlayerProvider().getPlayers();
+    return PlayerProvider().getPlayers(widget._team);
   }
 
   void _deletePlayer(Player playerToDelete) async {
