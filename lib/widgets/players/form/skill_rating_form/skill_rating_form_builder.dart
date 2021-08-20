@@ -6,9 +6,11 @@ import 'package:goateam/utils/database/provider/rating_type_provider.dart';
 
 class SkillRatingFormBuilder extends StatefulWidget {
   final RatingType _skillRating;
+  final Map<int, int> _ratings;
   final void Function(Map<int, int>) _skillRatingPickerCallback;
 
-  SkillRatingFormBuilder(this._skillRating, this._skillRatingPickerCallback);
+  SkillRatingFormBuilder(
+      this._skillRating, this._ratings, this._skillRatingPickerCallback);
 
   @override
   _SkillRatingFormBuilderState createState() => _SkillRatingFormBuilderState();
@@ -27,6 +29,10 @@ class _SkillRatingFormBuilderState extends State<SkillRatingFormBuilder> {
     if (widget._skillRating != null) {
       _ratingTypeAttributes = RatingTypeProvider()
           .getAttributesByRatingType(widget._skillRating.id);
+    }
+
+    if (widget._ratings != null) {
+      _skillRatingValues = widget._ratings;
     }
   }
 

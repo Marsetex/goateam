@@ -37,6 +37,13 @@ class _PlayerFormState extends State<PlayerForm> {
       if (widget._player != null) {
         _playerNameController.text = widget._player.name;
         _rawImage = widget._player.profilePic;
+
+        _ratings = new Map<int, int>();
+
+        widget._player.ratings.forEach((element) {
+          _ratings.putIfAbsent(element.ratingTypeAttributeId,
+              () => element.ratingAttributeValue);
+        });
       }
     }
   }
@@ -70,7 +77,8 @@ class _PlayerFormState extends State<PlayerForm> {
                 SizedBox(
                   height: 15.0,
                 ),
-                SkillRatingForm(_ratingType, _getSkillRatingFromPicker),
+                SkillRatingForm(
+                    _ratingType, _ratings, _getSkillRatingFromPicker),
                 SizedBox(
                   height: 15.0,
                 ),
@@ -100,7 +108,7 @@ class _PlayerFormState extends State<PlayerForm> {
   }
 
   _handleOnPressed() async {
-    var newPlayer = new Player(_playerNameController.text, _rawImage);
+    var newPlayer = new Player(_playerNameController.text, _rawImage, -1);
 
     await PlayerProvider().insertPlayer(newPlayer, widget._team, _ratings);
     Navigator.pop(context);

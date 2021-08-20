@@ -7,9 +7,11 @@ import 'package:goateam/widgets/players/form/skill_rating_form/skill_rating_form
 
 class SkillRatingForm extends StatefulWidget {
   final RatingType _skillRating;
+  final Map<int, int> _ratings;
   final void Function(Map<int, int>) _skillRatingPickerCallback;
 
-  SkillRatingForm(this._skillRating, this._skillRatingPickerCallback);
+  SkillRatingForm(
+      this._skillRating, this._ratings, this._skillRatingPickerCallback);
 
   @override
   _SkillRatingFormState createState() => _SkillRatingFormState();
@@ -52,8 +54,8 @@ class _SkillRatingFormState extends State<SkillRatingForm> {
               child: Text("Skill Rating"),
             ),
           ),
-          SkillRatingFormBuilder(
-              widget._skillRating, widget._skillRatingPickerCallback),
+          SkillRatingFormBuilder(widget._skillRating, widget._ratings,
+              widget._skillRatingPickerCallback),
           SizedBox(
             height: 15,
           ),
