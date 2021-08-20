@@ -1,31 +1,31 @@
 import 'package:goateam/utils/database/constants/database_constants.dart';
 
 class Rating {
-  int _id;
-  int _membershipId;
-  int _ratingTypeAttributeId;
-  int _ratingAttributeValue;
+  int id;
+  int membershipId;
+  int ratingTypeAttributeId;
+  int ratingAttributeValue;
 
-  Rating(this._membershipId, this._ratingTypeAttributeId,
-      this._ratingAttributeValue);
+  Rating(
+      this.membershipId, this.ratingTypeAttributeId, this.ratingAttributeValue);
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-    if (_id != null) {
-      map[DatabaseConstants.RTS_C_RATINGS_ID] = _id;
+    if (id != null) {
+      map[DatabaseConstants.RTS_C_RATINGS_ID] = id;
     }
-    map[DatabaseConstants.RTS_C_MEMBERSHIP_ID] = _membershipId;
+    map[DatabaseConstants.RTS_C_MEMBERSHIP_ID] = membershipId;
     map[DatabaseConstants.RTS_C_RATINGS_TYPE_ATTRIBUTE_ID] =
-        _ratingTypeAttributeId;
-    map[DatabaseConstants.RTS_C_RATING_ATTRIBUTE_VALUE] = _ratingAttributeValue;
+        ratingTypeAttributeId;
+    map[DatabaseConstants.RTS_C_RATING_ATTRIBUTE_VALUE] = ratingAttributeValue;
     return map;
   }
 
   Rating.fromMap(Map<String, dynamic> map) {
-    _id = map[DatabaseConstants.RTS_C_RATINGS_ID];
-    _membershipId = map[DatabaseConstants.RTS_C_MEMBERSHIP_ID];
-    _ratingTypeAttributeId =
+    id = map[DatabaseConstants.RTS_C_RATINGS_ID];
+    membershipId = map[DatabaseConstants.RTS_C_MEMBERSHIP_ID];
+    ratingTypeAttributeId =
         map[DatabaseConstants.RTS_C_RATINGS_TYPE_ATTRIBUTE_ID];
-    _ratingAttributeValue = map[DatabaseConstants.RTS_C_RATING_ATTRIBUTE_VALUE];
+    ratingAttributeValue = map[DatabaseConstants.RTS_C_RATING_ATTRIBUTE_VALUE];
   }
 }

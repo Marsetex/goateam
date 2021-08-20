@@ -42,7 +42,7 @@ class _TeamDetailViewState extends State<TeamDetailView> {
   }
 
   Future<List<Player>> _getPlayers() {
-    return PlayerProvider().getPlayers(widget._team);
+    return PlayerProvider().getPlayersOfTeam(widget._team);
   }
 
   FutureOr _onGoBack(dynamic value) {
