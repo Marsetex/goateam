@@ -5,9 +5,9 @@ import 'package:goateam/widgets/teams/views/team_editor_view.dart';
 
 class TeamDetailScrollView extends StatefulWidget {
   final Team _team;
-  final Widget _newsListSliver;
+  final Widget _scrollViewBody;
 
-  TeamDetailScrollView(this._team, this._newsListSliver);
+  TeamDetailScrollView(this._team, this._scrollViewBody);
 
   @override
   _TeamDetailScrollViewState createState() => _TeamDetailScrollViewState();
@@ -38,7 +38,7 @@ class _TeamDetailScrollViewState extends State<TeamDetailScrollView> {
             ),
           ],
         ),
-        widget._newsListSliver
+        widget._scrollViewBody
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:goateam/models/rating_type_attribute.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:goateam/models/rating_type.dart';
@@ -64,5 +65,21 @@ class RatingTypeProvider extends ProviderBase {
         });
       });
     });
+  }
+
+  Future<List<RatingTypeAttribute>> getAttributesByRatingType(int ratingTypeId,
+      [Database db]) async {
+    Database dbContext = await setDbContextIfNull(db);
+
+    List<Map<String, dynamic>> result = await dbContext.query(
+        DatabaseConstants.RTA_T_NAME,
+        where: '${DatabaseConstants.RTA_C_RATING_TYPE_ID} = ?',
+        whereArgs: [ratingTypeId]);
+
+    List<RatingTypeAttribute> attributes = List.empty(growable: true);
+    for (var record in result) {
+      attributes.add(RatingTypeAttribute.fromMap(record));
+    }
+    return attributes;
   }
 }
