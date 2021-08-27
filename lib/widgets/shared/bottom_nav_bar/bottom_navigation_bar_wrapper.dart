@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:goateam/enums/bottom_navigation_views.dart';
+import 'package:goateam/widgets/matchmaking/matchmaking_view.dart';
+import 'package:goateam/widgets/settings/settings_view.dart';
+import 'package:goateam/widgets/teams/views/team_home_view.dart';
+
 class BottomNavigationBarWrapper extends StatefulWidget {
-  BottomNavigationBarWrapper();
+  final BottomNavigationViews _view;
+
+  BottomNavigationBarWrapper(this._view);
 
   @override
   _BottomNavigationBarWrapperState createState() =>
@@ -10,28 +17,21 @@ class BottomNavigationBarWrapper extends StatefulWidget {
 
 class _BottomNavigationBarWrapperState
     extends State<BottomNavigationBarWrapper> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+  final List<Widget> _navBarWidgets = <Widget>[
+    MatchmakingHomeView(),
+    TeamHomeView(),
+    SettingsView()
   ];
 
-  void _onItemTapped(int index) {
+  int _selectedIndex = 0;
+
+  @override
+  void initState() {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = _mapViewToIndex(widget._view);
     });
+
+    super.initState();
   }
 
   @override
@@ -39,21 +39,61 @@ class _BottomNavigationBarWrapperState
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.wifi),
+          label: 'Matchmaking',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Business',
+          icon: Icon(Icons.group),
+          label: 'Teams',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'School',
+          icon: Icon(Icons.settings),
+          label: 'Settings',
         ),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      onTap: _onItemTapped,
+      selectedItemColor: Colors.blue,
+      onTap: _onNavBarItemTapped,
     );
+  }
+
+  void _onNavBarItemTapped(int index) {
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) =>
+              _navBarWidgets[index],
+          transitionDuration: Duration(seconds: 0),
+        ),
+      );
+      // Navigator.popAndPushNamed(context, '/second');
+
+      // Navigator.push(
+      //   context,
+      //   PageRouteBuilder(
+      //     pageBuilder: (context, animation1, animation2) =>
+      //         _navBarWidgets[index],
+      //     transitionDuration: Duration(seconds: 0),
+      //   ),
+      // );
+    }
+  }
+
+  int _mapViewToIndex(BottomNavigationViews view) {
+    switch (view) {
+      case BottomNavigationViews.matchmaking:
+        return 0;
+      case BottomNavigationViews.teams:
+        return 1;
+      case BottomNavigationViews.settings:
+        return 2;
+      default:
+        return 0;
+    }
   }
 }
