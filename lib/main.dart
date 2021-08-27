@@ -12,8 +12,6 @@ void main() async {
   runApp(GoateamApp());
 }
 
-void initApp() {}
-
 class GoateamApp extends StatelessWidget {
   final Future _appInitFuture = AppInitializer.initialize();
 
