@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:goateam/enums/bottom_navigation_views.dart';
 
 import 'package:goateam/models/team.dart';
 import 'package:goateam/utils/database/provider/team_provider.dart';
+import 'package:goateam/widgets/shared/bottom_nav_bar/bottom_navigation_bar_wrapper.dart';
 import 'package:goateam/widgets/teams/views/team_creator_view.dart';
 import 'package:goateam/widgets/teams/list/team_list.dart';
 
@@ -37,6 +39,8 @@ class _TeamHomeViewState extends State<TeamHomeView> {
         },
       ),
       body: Container(child: TeamList(_teams, deleteTeam)),
+      bottomNavigationBar:
+          BottomNavigationBarWrapper(BottomNavigationViews.teams),
     );
   }
 
